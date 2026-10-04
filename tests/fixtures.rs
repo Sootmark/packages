@@ -154,7 +154,10 @@ fn apt_records_each_run_and_who_asked_for_it() {
 
     let by_analyst = &parsed.transactions[1];
     let user = by_analyst.requested_by.as_ref().unwrap();
-    assert_eq!((user.name.as_str(), user.uid), ("analyst", Some(1000)));
+    assert_eq!(
+        (user.name.as_deref(), user.uid),
+        (Some("analyst"), Some(1000))
+    );
     assert_eq!(
         by_analyst.summary(),
         "apt-get install -y -qq hello by analyst (1000): install hello 2.10-5 (amd64)"
@@ -240,12 +243,19 @@ mod properties {
     use super::{parse, read, Kind};
     use proptest::prelude::*;
 
-    const KINDS: [Kind; 4] = [Kind::Dpkg, Kind::AptHistory, Kind::DnfRpm, Kind::Yum];
-    const FIXTURES: [(&str, Kind); 4] = [
+    const KINDS: [Kind; 5] = [
+        Kind::Dpkg,
+        Kind::AptHistory,
+        Kind::DnfRpm,
+        Kind::Yum,
+        Kind::DnfHistory,
+    ];
+    const FIXTURES: [(&str, Kind); 5] = [
         ("debian/dpkg.log", Kind::Dpkg),
         ("debian/apt/history.log", Kind::AptHistory),
         ("rocky9/dnf.rpm.log", Kind::DnfRpm),
         ("centos7/yum.log", Kind::Yum),
+        ("rocky9/dnf/history.sqlite", Kind::DnfHistory),
     ];
 
     fn summarise_all(parsed: &packages::Parsed) {
@@ -290,4 +300,48 @@ mod properties {
             summarise_all(&parse(kind, &data[..cut % (data.len() + 1)], super::october_2026()));
         }
     }
+}
+
+/// dnf's history database from the Rocky Linux 9 container: four
+/// transactions, their command lines, packages and dependency markers. In a
+/// container no login uid is recorded (`-1`): read as unknown.
+#[test]
+fn dnf_history_database() {
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/tests/fixtures/rocky9/dnf/history.sqlite"
+    );
+    let data = std::fs::read(path).unwrap();
+    assert_eq!(
+        packages::detect("var/lib/dnf/history.sqlite"),
+        Some(Kind::DnfHistory)
+    );
+    assert_eq!(packages::detect("home/a/history.sqlite"), None);
+    let parsed = packages::parse(Kind::DnfHistory, &data, Context::default());
+    assert!(parsed.problems.is_empty(), "{:?}", parsed.problems);
+    let summaries: Vec<String> = parsed
+        .transactions
+        .iter()
+        .map(packages::Transaction::summary)
+        .collect();
+    assert_eq!(summaries.len(), 4);
+    assert!(
+        summaries[1].starts_with("dnf -y -q install tree: install tree 1.8.0-"),
+        "{summaries:?}"
+    );
+    let jq = &parsed.transactions[2];
+    let names: Vec<(&str, bool)> = jq
+        .changes
+        .iter()
+        .map(|c| (c.package.as_str(), c.automatic))
+        .collect();
+    assert_eq!(names, [("jq", false), ("oniguruma", true)]);
+    let removal = &parsed.transactions[3].changes[0];
+    assert_eq!(
+        (removal.action, removal.package.as_str()),
+        (Action::Remove, "tree")
+    );
+    assert!(removal.old_version.is_some() && removal.new_version.is_none());
+    assert!(parsed.transactions.iter().all(|t| t.requested_by.is_none()));
+    assert!(parsed.transactions[0].start.is_some());
 }

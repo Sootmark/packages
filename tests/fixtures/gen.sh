@@ -56,6 +56,23 @@ rocky() {
     '
 }
 
+# dnf's history database: four transactions, one run through sudo by a
+# user (a container records no login uid, so it is -1 there). The database
+# is copied after dnf exits, its write-ahead log checkpointed into it.
+dnf_history() {
+    out="$here/rocky9/dnf"
+    mkdir -p "$out"
+    docker run --rm --hostname builder -v "$out:/out" rockylinux:9 sh -euc '
+        useradd -m -u 1000 analyst
+        dnf install -y -q sudo >/dev/null
+        echo "analyst ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/analyst
+        dnf install -y -q tree >/dev/null
+        su - analyst -c "sudo dnf install -y -q jq" >/dev/null
+        dnf remove -y -q tree >/dev/null
+        cp /var/lib/dnf/history.sqlite /out/history.sqlite
+    '
+}
+
 centos() {
     out="$here/centos7"
     mkdir -p "$out"
@@ -75,6 +92,7 @@ centos() {
 
 debian
 rocky
+dnf_history
 centos
 # The files belong to whoever ran this, not to root.
 chown -R "${SUDO_UID:-$(id -u)}:${SUDO_GID:-$(id -g)}" "$here"

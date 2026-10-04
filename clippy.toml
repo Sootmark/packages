@@ -1,2 +1,2 @@
 # Domain vocabulary that is prose, not code.
-doc-valid-idents = ["CentOS", ".."]
+doc-valid-idents = ["CentOS", "..", "SQLite"]

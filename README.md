@@ -4,7 +4,7 @@ Linux package-manager logs: what was installed, upgraded, downgraded and removed
 
 ```toml
 [dependencies]
-sootmark-packages = "0.1"
+sootmark-packages = "0.2"
 ```
 
 ```rust
@@ -28,13 +28,14 @@ for entry in &parsed.entries {
   - **apt** (`/var/log/apt/history.log`): one `Transaction` per run: start and end (wall clock; no end when apt was interrupted), command line, `Requested-By` (the account that ran it through sudo, and its uid), the Install / Upgrade / Downgrade / Reinstall / Remove / Purge lists with `automatic` marked, and the error apt reported. Fields this crate doesn't read are kept as written.
   - **dnf** (`/var/log/dnf.rpm.log`): `Installed`, `Upgrade`/`Upgraded`, `Downgrade`/`Downgraded`, `Reinstall`/`Reinstalled`, `Obsolete`/`Obsoleted`, `Erase`, `Cleanup`, with packages split as rpm names them (`name-[epoch:]version-release.arch`). dnf writes each side of a replacement on its own line: the incoming package fills `new_version`, the outgoing one `old_version`. Times carry an offset (`+0530`, `+00:00`, `Z`), so they are UTC here. Other lines (`--- logging initialized ---`, scriptlet warnings) are kept as messages, with their level.
   - **yum** (`/var/log/yum.log`, EL7 and earlier): `Installed`, `Updated`, `Erased`, the epoch written before the name. No year and no zone: the year is inferred as for classic syslog (lines are in order, so it goes up when the month goes back, and the last line is in the year the file was last modified, `Context::modified`) and marked on the entry; without a modification time, times are left unset and the text kept.
+  - **dnf's history database** (`/var/lib/dnf/history.sqlite`), read with `sootmark-sqlite`: one transaction per dnf run, with its command line, the login uid that ran it (the person behind `sudo dnf`; unknown when dnf recorded `-1`), begin and end (UTC), and each package with libdnf's action and whether it came in as a dependency. `parse_with_log` reads it with its `-wal` file, where the latest transactions often are.
 - Damage never panics: an unreadable line, a date that doesn't exist, or a package name that can't be split is reported in `problems`.
 
 Not yet: dnf5's logs (Fedora 41 and later), zypper and pacman, `/var/log/apt/term.log`, and dnf's history database.
 
 ## How it's checked
 
-- Logs written by real package managers (`tests/fixtures/`), made by `tests/fixtures/gen.sh` in throwaway containers: debian:trixie (apt installs, one through sudo by a non-root account, a reinstall, a removal, a purge and an autoremove), rockylinux:9 (dnf installs, a reinstall, erasures, in a +05:30 zone) and centos:7 (yum, from vault.centos.org). The tests check the packages, versions and actions the script asked for, the account apt ran for, and that every line of every file is an entry, part of a transaction, or a problem.
+- Logs and dnf's history database written by real package managers (`tests/fixtures/`), made by `tests/fixtures/gen.sh` in throwaway containers: debian:trixie (apt installs, one through sudo by a non-root account, a reinstall, a removal, a purge and an autoremove), rockylinux:9 (dnf installs, a reinstall, erasures, in a +05:30 zone) and centos:7 (yum, from vault.centos.org). The tests check the packages, versions and actions the script asked for, the account apt ran for, and that every line of every file is an entry, part of a transaction, or a problem.
 - Unit tests for what the containers didn't do: upgrades and downgrades in each format, epochs, conffile decisions, apt errors, cut-short transactions, dpkg version order, yum's year rolling over, leap days.
 - Property tests: arbitrary bytes read as each kind, and the real logs damaged or cut anywhere, give entries or problems, never a panic.
 

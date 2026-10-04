@@ -35,6 +35,7 @@ use std::fmt::Write as _;
 use common::time::Ts;
 
 mod apt;
+mod dnf_history;
 mod dpkg;
 mod rpm;
 mod time;
@@ -58,6 +59,9 @@ pub enum Kind {
     DnfRpm,
     /// `/var/log/yum.log`.
     Yum,
+    /// dnf's history database, `/var/lib/dnf/history.sqlite`: transactions
+    /// with their command line and the login uid that ran them.
+    DnfHistory,
 }
 
 /// What the file's metadata says, for what its lines don't.
@@ -265,8 +269,9 @@ impl Entry {
 /// ran it through sudo.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct User {
-    /// The account name.
-    pub name: String,
+    /// The account name, when written (apt; dnf's history keeps the uid
+    /// only).
+    pub name: Option<String>,
     /// Its numeric id, when written.
     pub uid: Option<u32>,
 }
@@ -305,9 +310,17 @@ impl Transaction {
     pub fn summary(&self) -> String {
         let mut text = self.command.clone().unwrap_or_else(|| "apt".to_owned());
         if let Some(user) = &self.requested_by {
-            let _ = write!(text, " by {}", user.name);
-            if let Some(uid) = user.uid {
-                let _ = write!(text, " ({uid})");
+            match (&user.name, user.uid) {
+                (Some(name), Some(uid)) => {
+                    let _ = write!(text, " by {name} ({uid})");
+                }
+                (Some(name), None) => {
+                    let _ = write!(text, " by {name}");
+                }
+                (None, Some(uid)) => {
+                    let _ = write!(text, " by uid {uid}");
+                }
+                (None, None) => {}
             }
         }
         let changes: Vec<String> = self.changes.iter().map(Change::summary).collect();
@@ -357,6 +370,7 @@ pub fn detect(name: &str) -> Option<Kind> {
         "history.log" if directory.map_or(true, |d| d == "apt") => Some(Kind::AptHistory),
         "dnf.rpm.log" => Some(Kind::DnfRpm),
         "yum.log" => Some(Kind::Yum),
+        "history.sqlite" if directory.map_or(true, |d| d == "dnf") => Some(Kind::DnfHistory),
         _ => None,
     }
 }
@@ -397,7 +411,27 @@ pub fn parse(kind: Kind, data: &[u8], context: Context) -> Parsed {
         Kind::AptHistory => apt::parse(&text, &mut parsed),
         Kind::DnfRpm => rpm::parse_dnf(&text, &mut parsed),
         Kind::Yum => rpm::parse_yum(&text, context, &mut parsed),
+        Kind::DnfHistory => dnf_history::parse(data, &[], &mut parsed),
     }
+    parsed
+}
+
+/// Read a file of `kind` with the SQLite write-ahead log beside it (`log`,
+/// its `-wal` file): dnf's history database, whose latest transactions are
+/// often only there. The log means nothing to the text logs: they read as
+/// [`parse`] reads them.
+#[must_use]
+pub fn parse_with_log(kind: Kind, data: &[u8], log: &[u8], context: Context) -> Parsed {
+    if kind != Kind::DnfHistory {
+        return parse(kind, data, context);
+    }
+    let mut parsed = Parsed {
+        kind,
+        entries: Vec::new(),
+        transactions: Vec::new(),
+        problems: Vec::new(),
+    };
+    dnf_history::parse(data, log, &mut parsed);
     parsed
 }
 

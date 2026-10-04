@@ -1,9 +1,9 @@
 [package]
 name = "sootmark-packages"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.80"
-description = "Linux package-manager logs (dpkg.log, apt history.log, dnf.rpm.log, yum.log): what was installed, upgraded and removed, when, and by whom, with honest times."
+description = "Linux package-manager logs (dpkg.log, apt history.log, dnf.rpm.log, yum.log) and dnf's history database: what was installed, upgraded and removed, when, and by whom, with honest times."
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/Sootmark/packages"
 homepage = "https://sootmark.com"
@@ -16,6 +16,7 @@ name = "packages"
 
 [dependencies]
 common = { package = "sootmark-common", version = "0.3.7" }
+sqlite = { package = "sootmark-sqlite", version = "0.2.0" }
 
 [dev-dependencies]
 proptest = "1"

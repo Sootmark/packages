@@ -123,11 +123,11 @@ fn user(value: &str) -> User {
         .and_then(|(name, uid)| Some((name, uid.parse().ok()?)));
     match parsed {
         Some((name, uid)) => User {
-            name: name.to_owned(),
+            name: Some(name.to_owned()),
             uid: Some(uid),
         },
         None => User {
-            name: value.to_owned(),
+            name: Some(value.to_owned()),
             uid: None,
         },
     }
@@ -250,6 +250,6 @@ End-Date: 2026-09-30  09:12:09
     fn requested_by_without_a_uid_keeps_the_name() {
         let parsed = read("Start-Date: 2026-09-30  09:12:01\nRequested-By: analyst\n");
         let user = parsed.transactions[0].requested_by.as_ref().unwrap();
-        assert_eq!((user.name.as_str(), user.uid), ("analyst", None));
+        assert_eq!((user.name.as_deref(), user.uid), (Some("analyst"), None));
     }
 }

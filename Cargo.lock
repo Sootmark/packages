@@ -248,11 +248,18 @@ checksum = "16039a30e3d12a335537236722ba00a8da0b5dfdfcf20785b75dea78f523160e"
 
 [[package]]
 name = "sootmark-packages"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "proptest",
  "sootmark-common",
+ "sootmark-sqlite",
 ]
+
+[[package]]
+name = "sootmark-sqlite"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4734c8224fde044029a00acd3c79637162e9e4d258b3b683108993713d990dcb"
 
 [[package]]
 name = "syn"
