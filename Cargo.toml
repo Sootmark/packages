@@ -1,0 +1,33 @@
+[package]
+name = "sootmark-packages"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+description = "Linux package-manager logs (dpkg.log, apt history.log, dnf.rpm.log, yum.log): what was installed, upgraded and removed, when, and by whom, with honest times."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Sootmark/packages"
+homepage = "https://sootmark.com"
+keywords = ["forensics", "dfir", "incident-response", "linux", "dpkg"]
+# Sources only: test fixtures stay in the repository.
+include = ["/src", "/README.md", "/LICENSE-APACHE", "/LICENSE-MIT"]
+
+[lib]
+name = "packages"
+
+[dependencies]
+common = { package = "sootmark-common", version = "0.3.7" }
+
+[dev-dependencies]
+proptest = "1"
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+cast_possible_truncation = "allow"
+cast_sign_loss = "allow"
+cast_possible_wrap = "allow"
+cast_precision_loss = "allow"

@@ -1,0 +1,12 @@
+2026-10-04T20:08:51+0530 INFO --- logging initialized ---
+2026-10-04T20:09:06+0530 SUBDEBUG Installed: oniguruma-6.9.6-1.el9.6.x86_64
+2026-10-04T20:09:06+0530 SUBDEBUG Installed: jq-1.6-19.el9_8.2.x86_64
+2026-10-04T20:09:06+0530 SUBDEBUG Installed: tree-1.8.0-10.el9.x86_64
+2026-10-04T20:09:07+0530 INFO --- logging initialized ---
+2026-10-04T20:09:07+0530 SUBDEBUG Reinstall: tree-1.8.0-10.el9.x86_64
+2026-10-04T20:09:07+0530 SUBDEBUG Reinstalled: tree-1.8.0-10.el9.x86_64
+2026-10-04T20:09:07+0530 INFO --- logging initialized ---
+2026-10-04T20:09:07+0530 SUBDEBUG Erase: tree-1.8.0-10.el9.x86_64
+2026-10-04T20:09:07+0530 INFO --- logging initialized ---
+2026-10-04T20:09:07+0530 SUBDEBUG Erase: jq-1.6-19.el9_8.2.x86_64
+2026-10-04T20:09:07+0530 SUBDEBUG Erase: oniguruma-6.9.6-1.el9.6.x86_64

@@ -1,0 +1,90 @@
+2026-10-04 16:38:41 startup archives unpack
+2026-10-04 16:38:41 install libonig5:amd64 <none> 6.9.9-1+b1
+2026-10-04 16:38:41 status triggers-pending libc-bin:amd64 2.41-12+deb13u4
+2026-10-04 16:38:41 status half-installed libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:41 status unpacked libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:41 install libjq1:amd64 <none> 1.7.1-6+deb13u4
+2026-10-04 16:38:41 status half-installed libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:41 status unpacked libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:41 install jq:amd64 <none> 1.7.1-6+deb13u4
+2026-10-04 16:38:41 status half-installed jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:41 status unpacked jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:41 install tree:amd64 <none> 2.2.1-1
+2026-10-04 16:38:41 status half-installed tree:amd64 2.2.1-1
+2026-10-04 16:38:41 status unpacked tree:amd64 2.2.1-1
+2026-10-04 16:38:42 startup packages configure
+2026-10-04 16:38:42 configure tree:amd64 2.2.1-1 <none>
+2026-10-04 16:38:42 status unpacked tree:amd64 2.2.1-1
+2026-10-04 16:38:42 status half-configured tree:amd64 2.2.1-1
+2026-10-04 16:38:42 status installed tree:amd64 2.2.1-1
+2026-10-04 16:38:42 configure libonig5:amd64 6.9.9-1+b1 <none>
+2026-10-04 16:38:42 status unpacked libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:42 status half-configured libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:42 status installed libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:42 configure libjq1:amd64 1.7.1-6+deb13u4 <none>
+2026-10-04 16:38:42 status unpacked libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:42 status half-configured libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:42 status installed libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:42 configure jq:amd64 1.7.1-6+deb13u4 <none>
+2026-10-04 16:38:42 status unpacked jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:42 status half-configured jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:42 status installed jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:42 trigproc libc-bin:amd64 2.41-12+deb13u4 <none>
+2026-10-04 16:38:42 status half-configured libc-bin:amd64 2.41-12+deb13u4
+2026-10-04 16:38:42 status installed libc-bin:amd64 2.41-12+deb13u4
+2026-10-04 16:38:43 startup archives unpack
+2026-10-04 16:38:43 install hello:amd64 <none> 2.10-5
+2026-10-04 16:38:43 status half-installed hello:amd64 2.10-5
+2026-10-04 16:38:43 status unpacked hello:amd64 2.10-5
+2026-10-04 16:38:43 startup packages configure
+2026-10-04 16:38:43 configure hello:amd64 2.10-5 <none>
+2026-10-04 16:38:43 status unpacked hello:amd64 2.10-5
+2026-10-04 16:38:43 status half-configured hello:amd64 2.10-5
+2026-10-04 16:38:43 status installed hello:amd64 2.10-5
+2026-10-04 16:38:44 startup archives unpack
+2026-10-04 16:38:44 upgrade hello:amd64 2.10-5 2.10-5
+2026-10-04 16:38:44 status half-configured hello:amd64 2.10-5
+2026-10-04 16:38:44 status unpacked hello:amd64 2.10-5
+2026-10-04 16:38:44 status half-installed hello:amd64 2.10-5
+2026-10-04 16:38:44 status unpacked hello:amd64 2.10-5
+2026-10-04 16:38:44 startup packages configure
+2026-10-04 16:38:44 configure hello:amd64 2.10-5 <none>
+2026-10-04 16:38:44 status unpacked hello:amd64 2.10-5
+2026-10-04 16:38:44 status half-configured hello:amd64 2.10-5
+2026-10-04 16:38:44 status installed hello:amd64 2.10-5
+2026-10-04 16:38:45 startup packages remove
+2026-10-04 16:38:45 status installed tree:amd64 2.2.1-1
+2026-10-04 16:38:45 remove tree:amd64 2.2.1-1 <none>
+2026-10-04 16:38:45 status half-configured tree:amd64 2.2.1-1
+2026-10-04 16:38:45 status half-installed tree:amd64 2.2.1-1
+2026-10-04 16:38:45 status config-files tree:amd64 2.2.1-1
+2026-10-04 16:38:45 status not-installed tree:amd64 <none>
+2026-10-04 16:38:45 startup packages configure
+2026-10-04 16:38:46 startup packages remove
+2026-10-04 16:38:46 status installed jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:46 remove jq:amd64 1.7.1-6+deb13u4 <none>
+2026-10-04 16:38:46 status half-configured jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:46 status half-installed jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:46 status config-files jq:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:46 status not-installed jq:amd64 <none>
+2026-10-04 16:38:46 startup packages configure
+2026-10-04 16:38:46 startup packages configure
+2026-10-04 16:38:47 startup packages remove
+2026-10-04 16:38:47 status installed libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:47 remove libjq1:amd64 1.7.1-6+deb13u4 <none>
+2026-10-04 16:38:47 status triggers-pending libc-bin:amd64 2.41-12+deb13u4
+2026-10-04 16:38:47 status half-configured libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:47 status half-installed libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:47 status config-files libjq1:amd64 1.7.1-6+deb13u4
+2026-10-04 16:38:47 status not-installed libjq1:amd64 <none>
+2026-10-04 16:38:47 status installed libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:47 remove libonig5:amd64 6.9.9-1+b1 <none>
+2026-10-04 16:38:47 status half-configured libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:47 status half-installed libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:47 status config-files libonig5:amd64 6.9.9-1+b1
+2026-10-04 16:38:47 status not-installed libonig5:amd64 <none>
+2026-10-04 16:38:47 startup packages configure
+2026-10-04 16:38:47 trigproc libc-bin:amd64 2.41-12+deb13u4 <none>
+2026-10-04 16:38:47 status half-configured libc-bin:amd64 2.41-12+deb13u4
+2026-10-04 16:38:47 status installed libc-bin:amd64 2.41-12+deb13u4
+2026-10-04 16:38:47 startup packages configure
